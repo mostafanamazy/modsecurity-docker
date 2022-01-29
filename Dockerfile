@@ -36,6 +36,11 @@ RUN ./auto/configure --with-ld-opt='-lstdc++ -lm' --with-cc-opt='-O2 -g0' --with
     && cp objs/ngx_http_modsecurity_module.so /usr/local/nginx/modules \
     && make clean 
 
+ENV CRS_VER='v3.3.2'
+WORKDIR /opt
+RUN git clone --depth 1 -b ${CRS_VER} https://github.com/coreruleset/coreruleset.git \
+    && cp /opt/coreruleset/crs-setup.conf.example /opt/coreruleset/crs-setup.conf
+
 WORKDIR /usr/local/nginx/modsec
 COPY ./conf/main.conf ./
 RUN cp /opt/ModSecurity/modsecurity.conf-recommended modsecurity.conf \
